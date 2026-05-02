@@ -1,2 +1,7 @@
 <Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FulfilmentApi.Domain/FulfilmentApi.Domain.csproj" />
+    <Project Path="src/FulfilmentApi.Infrastructure/FulfilmentApi.Infrastructure.csproj" />
+    <Project Path="src/FulfilmentApi/FulfilmentApi.csproj" />
+  </Folder>
 </Solution>
