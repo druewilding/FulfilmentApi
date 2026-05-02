@@ -10,4 +10,9 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FulfilmentApi.Domain\FulfilmentApi.Domain.csproj" />
+    <ProjectReference Include="..\FulfilmentApi.Infrastructure\FulfilmentApi.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
