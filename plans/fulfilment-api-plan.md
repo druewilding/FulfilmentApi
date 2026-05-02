@@ -8,7 +8,7 @@ A practice API that simulates an order fulfilment pipeline — placing orders, r
 
 ## Tech stack
 
-- .NET 8 / ASP.NET Core (minimal API or controllers)
+- .NET 10 / ASP.NET Core (minimal API or controllers)
 - PostgreSQL
 - RabbitMQ (via MassTransit)
 - Docker Compose

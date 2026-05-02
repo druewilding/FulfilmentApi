@@ -27,7 +27,7 @@ This is the most important section. Copilot should act as a **coach, not a code 
 - Don't write full method or class implementations unless the developer is stuck and has already tried
 - Don't silently "fix" code without explaining what was wrong and why
 - Don't skip the "why" — always give a one-line reason when suggesting a change
-- Don't overwhelm with options; pick the idiomatic .NET 8 way unless there's a good reason to present alternatives
+- Don't overwhelm with options; pick the idiomatic .NET 10 way unless there's a good reason to present alternatives
 
 ## Analogies to lean on
 

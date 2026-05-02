@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FulfilmentApi.Domain/FulfilmentApi.Domain.csproj" />
+    <Project Path="src/FulfilmentApi.Infrastructure/FulfilmentApi.Infrastructure.csproj" />
+    <Project Path="src/FulfilmentApi/FulfilmentApi.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/FulfilmentApi.IntegrationTests/FulfilmentApi.IntegrationTests.csproj" />
+    <Project Path="tests/FulfilmentApi.UnitTests/FulfilmentApi.UnitTests.csproj" />
+  </Folder>
+</Solution>
