@@ -1,6 +1,20 @@
 @FulfilmentApi_HostAddress = http://localhost:5142
 
-GET {{FulfilmentApi_HostAddress}}/weatherforecast/
-Accept: application/json
+GET {{FulfilmentApi_HostAddress}}/openapi/v1.json
+
+###
+
+GET {{FulfilmentApi_HostAddress}}/
+
+###
+
+POST {{FulfilmentApi_HostAddress}}/orders
+Content-Type: application/json
+
+{
+  "productId": "8cc53134-2dbe-404f-ad67-12ed858f07aa",
+  "quantity": 1,
+  "deliveryAddress": "10 Net Drive"
+}
 
 ###
