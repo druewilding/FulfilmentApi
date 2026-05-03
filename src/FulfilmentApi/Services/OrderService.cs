@@ -1,10 +1,10 @@
-interface IOrderService
+public interface IOrderService
 {
     OrderResponse CreateOrder(Order order);
     Order? GetOrder(Guid orderId);
 }
 
-class OrderService : IOrderService
+public class OrderService : IOrderService
 {
     private readonly Dictionary<Guid, Order> orders = new();
 
@@ -25,5 +25,5 @@ class OrderService : IOrderService
     }
 }
 
-record Order(Guid ProductId, int Quantity, string DeliveryAddress);
-record OrderResponse(Guid OrderId, string Status);
+public record Order(Guid ProductId, int Quantity, string DeliveryAddress);
+public record OrderResponse(Guid OrderId, string Status);
