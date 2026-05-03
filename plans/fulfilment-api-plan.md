@@ -18,13 +18,13 @@ A practice API that simulates an order fulfilment pipeline — placing orders, r
 
 ### Part 1: API Basics
 
-- [ ] Scaffold project: `dotnet new webapi -n FulfilmentApi`
-- [ ] POST `/orders` — accept an order (product, quantity, delivery address)
-- [ ] GET `/orders/{id}` — return order status
-- [ ] Service layer with dependency injection (interface + implementation)
-- [ ] Request logging middleware
+- [x] Scaffold project: `dotnet new webapi -n FulfilmentApi`
+- [x] POST `/orders` — accept an order (product, quantity, delivery address)
+- [x] GET `/orders/{id}` — return order status
+- [x] Service layer with dependency injection (interface + implementation)
+- [x] Request logging middleware
 - [ ] Background worker (BackgroundService) that "processes" orders from an in-memory queue
-- [ ] Basic xUnit tests for the service layer
+- [x] Basic xUnit tests for the service layer
 
 ### Part 2: Domain Modelling (DDD)
 
