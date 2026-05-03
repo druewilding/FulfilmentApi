@@ -14,6 +14,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.MapGet("/", () => Results.Ok(new { status = "healthy" }));
 
