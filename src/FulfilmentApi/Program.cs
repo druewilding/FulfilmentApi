@@ -1,3 +1,5 @@
+var orders = new Dictionary<Guid, Order>();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,11 +18,22 @@ app.UseHttpsRedirection();
 
 app.MapGet("/", () => Results.Ok(new { status = "healthy" }));
 
+app.MapGet("/orders/{orderId:guid}", (Guid orderId) =>
+{
+    if (orders.TryGetValue(orderId, out var order))
+    {
+        return Results.Ok(order);
+    }
+    return Results.NotFound();
+}).Produces<Order>(200).Produces(404);
+
 app.MapPost("/orders", (Order order) =>
 {
     // Process the order here
     var orderId = Guid.NewGuid();
-    return Results.Created($"/orders/{orderId}", new { status = "pending" });
+    orders[orderId] = order;
+    var orderResponse = new OrderResponse(orderId, "pending");
+    return Results.Created($"/orders/{orderId}", orderResponse);
 }).Produces<OrderResponse>(201);
 
 app.Run();

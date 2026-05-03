@@ -8,6 +8,11 @@ GET {{FulfilmentApi_HostAddress}}/
 
 ###
 
+GET {{FulfilmentApi_HostAddress}}/orders/c4a56727-3749-4044-b756-bcc9898574fd
+Accept: application/json
+
+###
+
 POST {{FulfilmentApi_HostAddress}}/orders
 Content-Type: application/json
 
