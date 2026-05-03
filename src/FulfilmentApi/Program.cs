@@ -3,6 +3,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddSingleton<IOrderService, OrderService>();
 
 var app = builder.Build();
 
@@ -13,17 +14,24 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.MapGet("/", () => Results.Ok(new { status = "healthy" }));
 
-app.MapPost("/orders", (Order order) =>
+app.MapGet("/orders/{orderId:guid}", (Guid orderId, IOrderService orderService) =>
 {
-    // Process the order here
-    var orderId = Guid.NewGuid();
-    return Results.Created($"/orders/{orderId}", new { status = "pending" });
+    var order = orderService.GetOrder(orderId);
+    if (order != null)
+    {
+        return Results.Ok(order);
+    }
+    return Results.NotFound();
+}).Produces<Order>(200).Produces(404);
+
+app.MapPost("/orders", (Order order, IOrderService orderService) =>
+{
+    var orderResponse = orderService.CreateOrder(order);
+    return Results.Created($"/orders/{orderResponse.OrderId}", orderResponse);
 }).Produces<OrderResponse>(201);
 
 app.Run();
-
-record Order(Guid ProductId, int Quantity, string DeliveryAddress);
-record OrderResponse(Guid OrderId, string Status);
