@@ -34,10 +34,10 @@ app.MapGet("/orders/{orderId:guid}", (Guid orderId, IOrderService orderService) 
     return Results.NotFound();
 }).Produces<Order>(200).Produces(404);
 
-app.MapPost("/orders", (Order order, IOrderService orderService) =>
+app.MapPost("/orders", async (Order order, IOrderService orderService) =>
 {
-    channel.Writer.WriteAsync(order);
     var orderResponse = orderService.CreateOrder(order);
+    await channel.Writer.WriteAsync(order);
     return Results.Created($"/orders/{orderResponse.OrderId}", orderResponse);
 }).Produces<OrderResponse>(201);
 
