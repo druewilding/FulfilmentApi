@@ -1,13 +1,8 @@
 using System.Threading.Channels;
 
-class OrderProcessingWorker : BackgroundService
+class OrderProcessingWorker(Channel<Order> channel) : BackgroundService
 {
-    private readonly Channel<Order> _channel;
-
-    public OrderProcessingWorker(Channel<Order> channel)
-    {
-        _channel = channel;
-    }
+    private readonly Channel<Order> _channel = channel;
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
