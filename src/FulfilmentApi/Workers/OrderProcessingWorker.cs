@@ -8,19 +8,14 @@ class OrderProcessingWorker : BackgroundService
     {
         _channel = channel;
     }
-    
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
+        await foreach (var order in _channel.Reader.ReadAllAsync(stoppingToken))
         {
-            await foreach (var order in _channel.Reader.ReadAllAsync(stoppingToken))
-            {
-                // Simulate order processing
-                Console.WriteLine($"Processing order for product {order.ProductId} to be delivered at {order.DeliveryAddress}");
-                // Here you would add your actual order processing logic
-            };
-
-            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+            // Simulate order processing
+            Console.WriteLine($"Processing order for product {order.ProductId} to be delivered at {order.DeliveryAddress}");
+            // Here you would add your actual order processing logic
         }
     }
 }
