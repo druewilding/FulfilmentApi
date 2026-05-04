@@ -1,9 +1,15 @@
+using System.Threading.Channels;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton<IOrderService, OrderService>();
+
+var channel = Channel.CreateUnbounded<Order>();
+builder.Services.AddSingleton(channel);
+builder.Services.AddHostedService<OrderProcessingWorker>(provider => new OrderProcessingWorker(channel));
 
 var app = builder.Build();
 
@@ -28,9 +34,10 @@ app.MapGet("/orders/{orderId:guid}", (Guid orderId, IOrderService orderService) 
     return Results.NotFound();
 }).Produces<Order>(200).Produces(404);
 
-app.MapPost("/orders", (Order order, IOrderService orderService) =>
+app.MapPost("/orders", async (Order order, IOrderService orderService) =>
 {
     var orderResponse = orderService.CreateOrder(order);
+    await channel.Writer.WriteAsync(order);
     return Results.Created($"/orders/{orderResponse.OrderId}", orderResponse);
 }).Produces<OrderResponse>(201);
 

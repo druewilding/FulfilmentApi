@@ -23,7 +23,7 @@ A practice API that simulates an order fulfilment pipeline — placing orders, r
 - [x] GET `/orders/{id}` — return order status
 - [x] Service layer with dependency injection (interface + implementation)
 - [x] Request logging middleware
-- [ ] Background worker (BackgroundService) that "processes" orders from an in-memory queue
+- [x] Background worker (BackgroundService) that "processes" orders from an in-memory queue
 - [x] Basic xUnit tests for the service layer
 
 ### Part 2: Domain Modelling (DDD)
