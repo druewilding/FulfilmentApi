@@ -37,8 +37,8 @@ app.MapGet("/orders/{orderId:guid}", (Guid orderId, IOrderService orderService) 
 app.MapPost("/orders", (Order order, IOrderService orderService) =>
 {
     channel.Writer.WriteAsync(order);
-    // var orderResponse = orderService.CreateOrder(order);
-    return Results.Ok();
-}).Produces<OrderResponse>(200);
+    var orderResponse = orderService.CreateOrder(order);
+    return Results.Created($"/orders/{orderResponse.OrderId}", orderResponse);
+}).Produces<OrderResponse>(201);
 
 app.Run();
