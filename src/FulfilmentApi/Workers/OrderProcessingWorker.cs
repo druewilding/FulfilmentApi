@@ -1,5 +1,4 @@
 using System.Threading.Channels;
-
 using FulfilmentApi.Domain;
 
 class OrderProcessingWorker(Channel<Order> channel) : BackgroundService
