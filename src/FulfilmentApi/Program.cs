@@ -1,4 +1,5 @@
 using System.Threading.Channels;
+using FulfilmentApi.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,11 +35,11 @@ app.MapGet("/orders/{orderId:guid}", (Guid orderId, IOrderService orderService) 
     return Results.NotFound();
 }).Produces<Order>(200).Produces(404);
 
-app.MapPost("/orders", async (Order order, IOrderService orderService) =>
+app.MapPost("/orders", async (CreateOrderRequest orderRequest, IOrderService orderService) =>
 {
-    var orderResponse = orderService.CreateOrder(order);
+    var order = orderService.CreateOrder(orderRequest);
     await channel.Writer.WriteAsync(order);
-    return Results.Created($"/orders/{orderResponse.OrderId}", orderResponse);
-}).Produces<OrderResponse>(201);
+    return Results.Created($"/orders/{order.Id}", order);
+}).Produces<Order>(201);
 
 app.Run();

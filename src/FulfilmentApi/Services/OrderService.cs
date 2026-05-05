@@ -1,6 +1,8 @@
+using FulfilmentApi.Domain;
+
 public interface IOrderService
 {
-    OrderResponse CreateOrder(Order order);
+    Order CreateOrder(CreateOrderRequest orderRequest);
     Order? GetOrder(Guid orderId);
 }
 
@@ -8,11 +10,12 @@ public class OrderService : IOrderService
 {
     private readonly Dictionary<Guid, Order> orders = new();
 
-    public OrderResponse CreateOrder(Order order)
+    public Order CreateOrder(CreateOrderRequest orderRequest)
     {
-        var orderId = Guid.NewGuid();
+        var order = new Order(orderRequest.ProductId, orderRequest.Quantity, orderRequest.DeliveryAddress);
+        var orderId = order.Id;
         orders[orderId] = order;
-        return new OrderResponse(orderId, "pending");
+        return order;
     }
 
     public Order? GetOrder(Guid orderId)
@@ -25,5 +28,4 @@ public class OrderService : IOrderService
     }
 }
 
-public record Order(Guid ProductId, int Quantity, string DeliveryAddress);
-public record OrderResponse(Guid OrderId, string Status);
+public record CreateOrderRequest(Guid ProductId, int Quantity, string DeliveryAddress);
