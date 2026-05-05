@@ -43,7 +43,3 @@ app.MapPost("/orders", async (CreateOrderRequest orderRequest, IOrderService ord
 }).Produces<OrderResponse>(201);
 
 app.Run();
-
-public record CreateOrderRequest(Guid ProductId, int Quantity, string DeliveryAddress);
-
-public record OrderResponse(Guid OrderId, string Status);
