@@ -97,6 +97,7 @@ dotnet add src/FulfilmentApi reference src/FulfilmentApi.Infrastructure
 dotnet add src/FulfilmentApi.Infrastructure reference src/FulfilmentApi.Domain
 
 dotnet add tests/FulfilmentApi.UnitTests reference src/FulfilmentApi
+dotnet add tests/FulfilmentApi.UnitTests reference src/FulfilmentApi.Domain
 
 # Run
 dotnet run --project src/FulfilmentApi
