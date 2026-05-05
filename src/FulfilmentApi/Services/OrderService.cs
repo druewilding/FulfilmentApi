@@ -27,5 +27,3 @@ public class OrderService : IOrderService
         return null;
     }
 }
-
-public record CreateOrderRequest(Guid ProductId, int Quantity, string DeliveryAddress);

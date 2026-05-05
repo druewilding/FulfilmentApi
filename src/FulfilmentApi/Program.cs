@@ -30,16 +30,20 @@ app.MapGet("/orders/{orderId:guid}", (Guid orderId, IOrderService orderService) 
     var order = orderService.GetOrder(orderId);
     if (order != null)
     {
-        return Results.Ok(order);
+        return Results.Ok(new OrderResponse(order.Id, order.Status.ToString()));
     }
     return Results.NotFound();
-}).Produces<Order>(200).Produces(404);
+}).Produces<OrderResponse>(200).Produces(404);
 
 app.MapPost("/orders", async (CreateOrderRequest orderRequest, IOrderService orderService) =>
 {
     var order = orderService.CreateOrder(orderRequest);
     await channel.Writer.WriteAsync(order);
-    return Results.Created($"/orders/{order.Id}", order);
-}).Produces<Order>(201);
+    return Results.Created($"/orders/{order.Id}", new OrderResponse(order.Id, order.Status.ToString()));
+}).Produces<OrderResponse>(201);
 
 app.Run();
+
+public record CreateOrderRequest(Guid ProductId, int Quantity, string DeliveryAddress);
+
+public record OrderResponse(Guid OrderId, string Status);
