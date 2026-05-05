@@ -1,5 +1,7 @@
 ﻿namespace FulfilmentApi.UnitTests;
 
+using FulfilmentApi.Domain;
+
 public class OrderServiceTests
 {
     [Fact]
@@ -10,13 +12,13 @@ public class OrderServiceTests
         var order = new Order(Guid.NewGuid(), 2, "123 Main St");
 
         // Act
-        var response = orderService.CreateOrder(order);
+        var response = orderService.CreateOrder(new CreateOrderRequest(order.ProductId, order.Quantity, order.DeliveryAddress));
 
         // Assert
         Assert.NotNull(response);
-        Assert.IsType<OrderResponse>(response);
-        Assert.NotEqual(Guid.Empty, response.OrderId);
-        Assert.Equal("pending", response.Status);
+        Assert.IsType<Order>(response);
+        Assert.NotEqual(Guid.Empty, response.Id);
+        Assert.Equal(OrderStatus.Pending, response.Status);
     }
 
     [Fact]
@@ -25,10 +27,10 @@ public class OrderServiceTests
         // Arrange
         var orderService = new OrderService();
         var order = new Order(Guid.NewGuid(), 2, "123 Main St");
-        var response = orderService.CreateOrder(order);
+        var response = orderService.CreateOrder(new CreateOrderRequest(order.ProductId, order.Quantity, order.DeliveryAddress));
 
         // Act
-        var retrievedOrder = orderService.GetOrder(response.OrderId);
+        var retrievedOrder = orderService.GetOrder(response.Id);
 
         // Assert
         Assert.NotNull(retrievedOrder);

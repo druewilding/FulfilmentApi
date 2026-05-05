@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\FulfilmentApi\FulfilmentApi.csproj" />
+    <ProjectReference Include="..\..\src\FulfilmentApi.Domain\FulfilmentApi.Domain.csproj" />
   </ItemGroup>
 
 </Project>

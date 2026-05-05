@@ -28,7 +28,7 @@ A practice API that simulates an order fulfilment pipeline — placing orders, r
 
 ### Part 2: Domain Modelling (DDD)
 
-- [ ] Create `Domain/` folder — no infrastructure references allowed here
+- [x] Create `Domain/` folder — no infrastructure references allowed here
 - [ ] `Order` aggregate root with invariants:
   - Can't add items after confirmation
   - Can't exceed max delivery weight
@@ -97,6 +97,7 @@ dotnet add src/FulfilmentApi reference src/FulfilmentApi.Infrastructure
 dotnet add src/FulfilmentApi.Infrastructure reference src/FulfilmentApi.Domain
 
 dotnet add tests/FulfilmentApi.UnitTests reference src/FulfilmentApi
+dotnet add tests/FulfilmentApi.UnitTests reference src/FulfilmentApi.Domain
 
 # Run
 dotnet run --project src/FulfilmentApi
