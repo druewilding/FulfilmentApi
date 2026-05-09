@@ -38,9 +38,7 @@ public class OrderServiceTests
         Assert.NotNull(retrievedOrder);
         Assert.Equal(orderRequest.ProductId, retrievedOrder.ProductId);
         Assert.Equal(orderRequest.Quantity, retrievedOrder.Quantity);
-        Assert.Equal(orderRequest.DeliveryAddress.Street, retrievedOrder.DeliveryAddress.Street);
-        Assert.Equal(orderRequest.DeliveryAddress.PostalCode, retrievedOrder.DeliveryAddress.PostalCode);
-        Assert.Equal(orderRequest.DeliveryAddress.City, retrievedOrder.DeliveryAddress.City);
+        Assert.Equal(new Address("123 Main St", "12345", "Sample City"), retrievedOrder.DeliveryAddress);
     }
 
     [Fact]
