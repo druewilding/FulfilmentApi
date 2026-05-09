@@ -17,8 +17,22 @@ POST {{FulfilmentApi_HostAddress}}/orders
 Content-Type: application/json
 
 {
-  "productId": "8cc53134-2dbe-404f-ad67-12ed858f07aa",
-  "quantity": 1,
+  "items": [
+    {
+       "productId": "8cc53134-2dbe-404f-ad67-12ed858f07aa",
+       "weight": {
+         "amount": 500,
+         "unit": "Grams"
+       }
+    },
+    {
+       "productId": "503bf858-a5e9-4daf-ace8-ffb086e9bcb4",
+       "weight": {
+         "amount": 25,
+         "unit": "Grams"
+       }
+    }
+  ],
   "deliveryAddress": {
     "street": "10 Net Drive",
     "postalCode": "12345",

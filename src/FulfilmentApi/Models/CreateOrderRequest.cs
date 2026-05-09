@@ -1,1 +1,1 @@
-public record CreateOrderRequest(Guid ProductId, int Quantity, AddressRequest DeliveryAddress);
+public record CreateOrderRequest(List<OrderItemRequest> Items, AddressRequest DeliveryAddress);
