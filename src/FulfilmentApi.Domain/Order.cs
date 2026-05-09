@@ -10,9 +10,10 @@ public enum OrderStatus
 
 public class Order
 {
+    private static readonly Weight MaxWeight = new Weight(30_000, Unit.Grams);
+
     public Guid Id { get; private set; }
-    public Guid ProductId { get; private set; }
-    public int Quantity { get; private set; }
+    public IReadOnlyList<OrderItem> Items => _items.AsReadOnly();
     public Address DeliveryAddress { get; private set; }
     public OrderStatus Status { get; private set; }
 
