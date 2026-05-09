@@ -9,11 +9,11 @@ public class OrderServiceTests
     {
         // Arrange
         var orderService = new OrderService();
-        var deliveryAddress = new Address("123 Main St", "12345", "Sample City");
-        var order = new Order(Guid.NewGuid(), 2, deliveryAddress);
+        var deliveryAddressRequest = new AddressRequest("123 Main St", "12345", "Sample City");
+        var orderRequest = new CreateOrderRequest(Guid.NewGuid(), 2, deliveryAddressRequest);
 
         // Act
-        var response = orderService.CreateOrder(new CreateOrderRequest(order.ProductId, order.Quantity, order.DeliveryAddress));
+        var response = orderService.CreateOrder(orderRequest);
 
         // Assert
         Assert.NotNull(response);
@@ -27,18 +27,20 @@ public class OrderServiceTests
     {
         // Arrange
         var orderService = new OrderService();
-        var deliveryAddress = new Address("123 Main St", "12345", "Sample City");
-        var order = new Order(Guid.NewGuid(), 2, deliveryAddress);
-        var response = orderService.CreateOrder(new CreateOrderRequest(order.ProductId, order.Quantity, order.DeliveryAddress));
+        var deliveryAddressRequest = new AddressRequest("123 Main St", "12345", "Sample City");
+        var orderRequest = new CreateOrderRequest(Guid.NewGuid(), 2, deliveryAddressRequest);
+        var response = orderService.CreateOrder(orderRequest);
 
         // Act
         var retrievedOrder = orderService.GetOrder(response.Id);
 
         // Assert
         Assert.NotNull(retrievedOrder);
-        Assert.Equal(order.ProductId, retrievedOrder.ProductId);
-        Assert.Equal(order.Quantity, retrievedOrder.Quantity);
-        Assert.Equal(order.DeliveryAddress, retrievedOrder.DeliveryAddress);
+        Assert.Equal(orderRequest.ProductId, retrievedOrder.ProductId);
+        Assert.Equal(orderRequest.Quantity, retrievedOrder.Quantity);
+        Assert.Equal(orderRequest.DeliveryAddress.Street, retrievedOrder.DeliveryAddress.Street);
+        Assert.Equal(orderRequest.DeliveryAddress.PostalCode, retrievedOrder.DeliveryAddress.PostalCode);
+        Assert.Equal(orderRequest.DeliveryAddress.City, retrievedOrder.DeliveryAddress.City);
     }
 
     [Fact]
