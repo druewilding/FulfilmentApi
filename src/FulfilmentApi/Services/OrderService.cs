@@ -12,9 +12,18 @@ public class OrderService : IOrderService
 
     public Order CreateOrder(CreateOrderRequest orderRequest)
     {
-        var order = new Order(orderRequest.ProductId, orderRequest.Quantity, orderRequest.DeliveryAddress);
+        var deliveryAddress = new Address(orderRequest.DeliveryAddress.Street, orderRequest.DeliveryAddress.PostalCode, orderRequest.DeliveryAddress.City);
+        var order = new Order(deliveryAddress);
+
+        foreach (var itemRequest in orderRequest.Items)
+        {
+            var orderItem = new OrderItem(itemRequest.ProductId, new Weight(itemRequest.Weight.Amount, itemRequest.Weight.Unit));
+            order.AddItem(orderItem);
+        }
+
         var orderId = order.Id;
         orders[orderId] = order;
+        Console.WriteLine($"Order created with ID: {orderId}, containing {order.Items.Count} items, total weight: {order.Items.Sum(i => i.Weight.Amount)} {order.Items.FirstOrDefault()?.Weight.Unit}");
         return order;
     }
 
