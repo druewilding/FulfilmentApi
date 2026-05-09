@@ -33,4 +33,18 @@ public class Order
 
         Status = OrderStatus.Processing;
     }
+
+    public void AddItem(OrderItem item)
+    {
+        ArgumentNullException.ThrowIfNull(item);
+
+        if (Status != OrderStatus.Pending)
+            throw new InvalidOperationException("Items can only be added to pending orders.");
+
+        var totalWeight = _items.Aggregate(new Weight(0, Unit.Grams), (sum, i) => sum + i.Weight) + item.Weight;
+        if (totalWeight > MaxWeight)
+            throw new InvalidOperationException($"Total weight of order items cannot exceed {MaxWeight}.");
+
+        _items.Add(item);
+    }
 }
