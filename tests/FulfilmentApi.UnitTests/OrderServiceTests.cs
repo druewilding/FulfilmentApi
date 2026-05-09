@@ -9,7 +9,8 @@ public class OrderServiceTests
     {
         // Arrange
         var orderService = new OrderService();
-        var order = new Order(Guid.NewGuid(), 2, "123 Main St");
+        var deliveryAddress = new Address("123 Main St", "12345", "Sample City");
+        var order = new Order(Guid.NewGuid(), 2, deliveryAddress);
 
         // Act
         var response = orderService.CreateOrder(new CreateOrderRequest(order.ProductId, order.Quantity, order.DeliveryAddress));
@@ -26,7 +27,8 @@ public class OrderServiceTests
     {
         // Arrange
         var orderService = new OrderService();
-        var order = new Order(Guid.NewGuid(), 2, "123 Main St");
+        var deliveryAddress = new Address("123 Main St", "12345", "Sample City");
+        var order = new Order(Guid.NewGuid(), 2, deliveryAddress);
         var response = orderService.CreateOrder(new CreateOrderRequest(order.ProductId, order.Quantity, order.DeliveryAddress));
 
         // Act

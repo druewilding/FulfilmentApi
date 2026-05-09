@@ -12,7 +12,8 @@ public class OrderService : IOrderService
 
     public Order CreateOrder(CreateOrderRequest orderRequest)
     {
-        var order = new Order(orderRequest.ProductId, orderRequest.Quantity, orderRequest.DeliveryAddress);
+        var deliveryAddress = new Address(orderRequest.DeliveryAddress.Street, orderRequest.DeliveryAddress.PostalCode, orderRequest.DeliveryAddress.City);
+        var order = new Order(orderRequest.ProductId, orderRequest.Quantity, deliveryAddress);
         var orderId = order.Id;
         orders[orderId] = order;
         return order;

@@ -13,10 +13,10 @@ public class Order
     public Guid Id { get; private set; }
     public Guid ProductId { get; private set; }
     public int Quantity { get; private set; }
-    public string DeliveryAddress { get; private set; }
+    public Address DeliveryAddress { get; private set; }
     public OrderStatus Status { get; private set; }
 
-    public Order(Guid productId, int quantity, string deliveryAddress)
+    public Order(Guid productId, int quantity, Address deliveryAddress)
     {
         Id = Guid.NewGuid();
         ProductId = productId;

@@ -19,7 +19,11 @@ Content-Type: application/json
 {
   "productId": "8cc53134-2dbe-404f-ad67-12ed858f07aa",
   "quantity": 1,
-  "deliveryAddress": "10 Net Drive"
+  "deliveryAddress": {
+    "street": "10 Net Drive",
+    "postalCode": "12345",
+    "city": "Sample City"
+  }
 }
 
 ###
