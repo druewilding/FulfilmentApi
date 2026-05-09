@@ -19,11 +19,9 @@ public class Order
     public Address DeliveryAddress { get; private set; }
     public OrderStatus Status { get; private set; }
 
-    public Order(Guid productId, int quantity, Address deliveryAddress)
+    public Order(Address deliveryAddress)
     {
         Id = Guid.NewGuid();
-        ProductId = productId;
-        Quantity = quantity;
         DeliveryAddress = deliveryAddress;
         Status = OrderStatus.Pending;
     }
