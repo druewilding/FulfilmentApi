@@ -1,5 +1,6 @@
 using System.Threading.Channels;
 using FulfilmentApi.Domain;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +13,25 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
 });
 
-builder.Services.AddSingleton<IOrderService, OrderService>();
+builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 var channel = Channel.CreateUnbounded<Order>();
 builder.Services.AddSingleton(channel);
 builder.Services.AddHostedService<OrderProcessingWorker>(provider => new OrderProcessingWorker(channel));
+
+// Configure MassTransit with RabbitMQ
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("localhost", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+    });
+});
 
 var app = builder.Build();
 
@@ -31,9 +46,9 @@ app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.MapGet("/", () => Results.Ok(new { status = "healthy" }));
 
-app.MapGet("/orders/{orderId:guid}", (Guid orderId, IOrderService orderService) =>
+app.MapGet("/orders/{orderId:guid}", async (Guid orderId, IOrderService orderService) =>
 {
-    var order = orderService.GetOrder(orderId);
+    var order = await orderService.GetOrder(orderId);
     if (order != null)
     {
         return Results.Ok(new OrderResponse(order.Id, order.Status.ToString()));
@@ -43,7 +58,7 @@ app.MapGet("/orders/{orderId:guid}", (Guid orderId, IOrderService orderService) 
 
 app.MapPost("/orders", async (CreateOrderRequest orderRequest, IOrderService orderService) =>
 {
-    var order = orderService.CreateOrder(orderRequest);
+    var order = await orderService.CreateOrder(orderRequest);
     await channel.Writer.WriteAsync(order);
     return Results.Created($"/orders/{order.Id}", new OrderResponse(order.Id, order.Status.ToString()));
 }).Produces<OrderResponse>(201);

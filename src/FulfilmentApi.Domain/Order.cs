@@ -16,6 +16,8 @@ public class Order
 
     private readonly List<OrderItem> _items = [];
     public IReadOnlyList<OrderItem> Items => _items.AsReadOnly();
+    private readonly List<IDomainEvent> _domainEvents = [];
+    public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
     public Address DeliveryAddress { get; private set; }
     public OrderStatus Status { get; private set; }
 
@@ -24,6 +26,7 @@ public class Order
         Id = Guid.NewGuid();
         DeliveryAddress = deliveryAddress;
         Status = OrderStatus.Pending;
+        _domainEvents.Add(new OrderPlaced(Id));
     }
 
     public void Confirm()
@@ -32,6 +35,7 @@ public class Order
             throw new InvalidOperationException("Only pending orders can be confirmed.");
 
         Status = OrderStatus.Processing;
+        _domainEvents.Add(new OrderConfirmed(Id));
     }
 
     public void AddItem(OrderItem item)

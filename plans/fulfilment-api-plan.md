@@ -33,9 +33,9 @@ A practice API that simulates an order fulfilment pipeline — placing orders, r
   - Can't add items after confirmation
   - Can't exceed max delivery weight
 - [x] Value objects: `Address`, `Money`, `Weight`
-- [ ] Domain events: `OrderPlaced`, `OrderConfirmed`
+- [x] Domain events: `OrderPlaced`, `OrderConfirmed`
 - [ ] `DeliverySlot` entity
-- [ ] Unit tests for domain logic (invariant enforcement)
+- [x] Unit tests for domain logic (invariant enforcement)
 
 ### Part 3: Event-Driven Messaging
 

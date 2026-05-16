@@ -1,16 +1,24 @@
 using FulfilmentApi.Domain;
+using MassTransit;
 
 public interface IOrderService
 {
-    Order CreateOrder(CreateOrderRequest orderRequest);
-    Order? GetOrder(Guid orderId);
+    Task<Order> CreateOrder(CreateOrderRequest orderRequest);
+    Task<Order?> GetOrder(Guid orderId);
 }
 
 public class OrderService : IOrderService
 {
-    private readonly Dictionary<Guid, Order> orders = new();
+    private readonly IOrderRepository orders;
+    private readonly IPublishEndpoint publishEndpoint;
 
-    public Order CreateOrder(CreateOrderRequest orderRequest)
+    public OrderService(IOrderRepository orders, IPublishEndpoint publishEndpoint)
+    {
+        this.orders = orders;
+        this.publishEndpoint = publishEndpoint;
+    }
+
+    public async Task<Order> CreateOrder(CreateOrderRequest orderRequest)
     {
         var deliveryAddress = new Address(orderRequest.DeliveryAddress.Street, orderRequest.DeliveryAddress.PostalCode, orderRequest.DeliveryAddress.City);
         var order = new Order(deliveryAddress);
@@ -22,17 +30,17 @@ public class OrderService : IOrderService
         }
 
         var orderId = order.Id;
-        orders[orderId] = order;
+        await orders.Save(order);
+
+        // Publish domain events to RabbitMQ
+        await publishEndpoint.Publish(new OrderPlaced(orderId));
+
         Console.WriteLine($"Order created with ID: {orderId}, containing {order.Items.Count} items, total weight: {order.Items.Sum(i => i.Weight.Amount)} {order.Items.FirstOrDefault()?.Weight.Unit}");
         return order;
     }
 
-    public Order? GetOrder(Guid orderId)
+    public async Task<Order?> GetOrder(Guid orderId)
     {
-        if (orders.TryGetValue(orderId, out var order))
-        {
-            return order;
-        }
-        return null;
+        return await orders.FindById(orderId);
     }
 }
