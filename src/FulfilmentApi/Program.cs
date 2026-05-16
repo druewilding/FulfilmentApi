@@ -1,5 +1,6 @@
 using System.Threading.Channels;
 using FulfilmentApi.Domain;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,19 @@ builder.Services.AddSingleton<IOrderService, OrderService>();
 var channel = Channel.CreateUnbounded<Order>();
 builder.Services.AddSingleton(channel);
 builder.Services.AddHostedService<OrderProcessingWorker>(provider => new OrderProcessingWorker(channel));
+
+// Configure MassTransit with RabbitMQ
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("localhost", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+    });
+});
 
 var app = builder.Build();
 
