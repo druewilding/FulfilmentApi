@@ -107,6 +107,7 @@ public class OrderTests
 
         // Assert
         Assert.Contains(order.DomainEvents, e => e is OrderPlaced placed && placed.OrderId == order.Id);
+        Assert.NotEqual(default, ((OrderPlaced)order.DomainEvents.First(e => e is OrderPlaced)).OccurredAt);
     }
 
     [Fact]
@@ -121,5 +122,6 @@ public class OrderTests
 
         // Assert
         Assert.Contains(order.DomainEvents, e => e is OrderConfirmed confirmed && confirmed.OrderId == order.Id);
+        Assert.NotEqual(default, ((OrderConfirmed)order.DomainEvents.First(e => e is OrderConfirmed)).OccurredAt);
     }
 }
