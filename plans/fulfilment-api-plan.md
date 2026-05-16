@@ -29,10 +29,10 @@ A practice API that simulates an order fulfilment pipeline — placing orders, r
 ### Part 2: Domain Modelling (DDD)
 
 - [x] Create `Domain/` folder — no infrastructure references allowed here
-- [ ] `Order` aggregate root with invariants:
+- [x] `Order` aggregate root with invariants:
   - Can't add items after confirmation
   - Can't exceed max delivery weight
-- [ ] Value objects: `Address`, `Money`, `Weight`
+- [x] Value objects: `Address`, `Money`, `Weight`
 - [ ] Domain events: `OrderPlaced`, `OrderConfirmed`
 - [ ] `DeliverySlot` entity
 - [ ] Unit tests for domain logic (invariant enforcement)
