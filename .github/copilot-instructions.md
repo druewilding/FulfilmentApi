@@ -29,20 +29,35 @@ This is the most important section. Copilot should act as a **coach, not a code 
 - Don't skip the "why" — always give a one-line reason when suggesting a change
 - Don't overwhelm with options; pick the idiomatic .NET 10 way unless there's a good reason to present alternatives
 
+## The developer's message queue background
+
+At work they use a **custom Postgres-based pub/sub system** (`@hedia/message-queue`) with an AMQP-like interface. Key concepts they already know:
+
+- **Exchanges** = where producers publish messages
+- **Queues** = where consumers receive messages, bound to an exchange with a routing key
+- **basicPublish / basicConsume** = publish a message / async iterator consumer loop
+- **Ack/Nack** = success (remove from queue) / failure (reset for retry)
+- **Channels** = track which consumer holds a message (exclusive delivery)
+
+When explaining RabbitMQ and MassTransit, lean on these concepts. The mental model maps closely — RabbitMQ uses the same exchange/queue/binding/ack terminology. MassTransit just abstracts it so you don't wire up exchanges and queues manually.
+
 ## Analogies to lean on
 
-| .NET concept                           | Rails/Node equivalent                    |
-| -------------------------------------- | ---------------------------------------- |
-| `IServiceCollection` / DI container    | `container.register` / Nest.js providers |
-| `appsettings.json` + `IOptions<T>`     | `config/` + env vars                     |
-| `ILogger<T>`                           | Rails logger / Winston                   |
-| `IHostedService` / `BackgroundService` | Sidekiq workers / Bull queues            |
-| `Middleware`                           | Rack middleware / Express middleware     |
-| `Entity Framework Core`                | ActiveRecord / Prisma / TypeORM          |
-| `MassTransit`                          | Sneakers / BullMQ                        |
-| `xUnit` + `WebApplicationFactory`      | RSpec + rack-test                        |
-| `record` types                         | Immutable value objects                  |
-| `interface` + `class` split            | TypeScript `interface` + `implements`    |
+| .NET concept                           | Rails/Node/work equivalent                       |
+| -------------------------------------- | ------------------------------------------------ |
+| `IServiceCollection` / DI container    | `container.register` / Nest.js providers         |
+| `appsettings.json` + `IOptions<T>`     | `config/` + env vars                             |
+| `ILogger<T>`                           | Rails logger / Winston                           |
+| `IHostedService` / `BackgroundService` | Sidekiq workers / Bull queues                    |
+| `Middleware`                           | Rack middleware / Express middleware             |
+| `Entity Framework Core`                | ActiveRecord / Prisma / TypeORM                  |
+| `MassTransit`                          | `@hedia/message-queue` / BullMQ (with exchanges) |
+| RabbitMQ exchange + queue + binding    | `exchangeDeclare` + `queueDeclare` + `queueBind` |
+| MassTransit `IConsumer<T>`             | `for await (const message of messages)` consumer |
+| MassTransit `Consume(context)`         | `basicAck` after processing                      |
+| `xUnit` + `WebApplicationFactory`      | RSpec + rack-test                                |
+| `record` types                         | Immutable value objects                          |
+| `interface` + `class` split            | TypeScript `interface` + `implements`            |
 
 ## .NET-specific things to reinforce
 
