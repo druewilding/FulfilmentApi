@@ -95,4 +95,31 @@ public class OrderTests
         // Act & Assert
         Assert.Throws<InvalidOperationException>(() => order.AddItem(orderItem));
     }
+
+    [Fact]
+    public void Order_ShouldRaiseOrderPlacedEvent_WhenCreated()
+    {
+        // Arrange
+        var deliveryAddress = new Address("123 Main St", "12345", "Sample City");
+
+        // Act
+        var order = new Order(deliveryAddress);
+
+        // Assert
+        Assert.Contains(order.DomainEvents, e => e is OrderPlaced placed && placed.OrderId == order.Id);
+    }
+
+    [Fact]
+    public void Order_ShouldRaiseOrderConfirmedEvent_WhenConfirmed()
+    {
+        // Arrange
+        var deliveryAddress = new Address("123 Main St", "12345", "Sample City");
+        var order = new Order(deliveryAddress);
+
+        // Act
+        order.Confirm();
+
+        // Assert
+        Assert.Contains(order.DomainEvents, e => e is OrderConfirmed confirmed && confirmed.OrderId == order.Id);
+    }
 }
