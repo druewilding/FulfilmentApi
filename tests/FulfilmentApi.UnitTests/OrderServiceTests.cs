@@ -10,7 +10,8 @@ public class OrderServiceTests
         // Arrange
         var orderService = new OrderService();
         var deliveryAddressRequest = new AddressRequest("123 Main St", "12345", "Sample City");
-        var orderRequest = new CreateOrderRequest(Guid.NewGuid(), 2, deliveryAddressRequest);
+        var orderItemRequest = new OrderItemRequest(Guid.NewGuid(), new WeightRequest(2, Unit.Grams));
+        var orderRequest = new CreateOrderRequest([orderItemRequest], deliveryAddressRequest);
 
         // Act
         var response = orderService.CreateOrder(orderRequest);
@@ -28,7 +29,8 @@ public class OrderServiceTests
         // Arrange
         var orderService = new OrderService();
         var deliveryAddressRequest = new AddressRequest("123 Main St", "12345", "Sample City");
-        var orderRequest = new CreateOrderRequest(Guid.NewGuid(), 2, deliveryAddressRequest);
+        var orderItemRequest = new OrderItemRequest(Guid.NewGuid(), new WeightRequest(2, Unit.Grams));
+        var orderRequest = new CreateOrderRequest([orderItemRequest], deliveryAddressRequest);
         var response = orderService.CreateOrder(orderRequest);
 
         // Act
