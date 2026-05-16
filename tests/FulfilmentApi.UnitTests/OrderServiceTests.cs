@@ -1,20 +1,23 @@
 ﻿namespace FulfilmentApi.UnitTests;
 
 using FulfilmentApi.Domain;
+using MassTransit;
+using NSubstitute;
 
 public class OrderServiceTests
 {
     [Fact]
-    public void CreateOrder_ShouldReturnOrderResponse()
+    public async Task CreateOrder_ShouldReturnOrderResponse()
     {
         // Arrange
-        var orderService = new OrderService();
+        var publishEndpoint = Substitute.For<IPublishEndpoint>();
+        var orderService = new OrderService(new OrderRepository(), publishEndpoint);
         var deliveryAddressRequest = new AddressRequest("123 Main St", "12345", "Sample City");
         var orderItemRequest = new OrderItemRequest(Guid.NewGuid(), new WeightRequest(2, Unit.Grams));
         var orderRequest = new CreateOrderRequest([orderItemRequest], deliveryAddressRequest);
 
         // Act
-        var response = orderService.CreateOrder(orderRequest);
+        var response = await orderService.CreateOrder(orderRequest);
 
         // Assert
         Assert.NotNull(response);
@@ -24,17 +27,18 @@ public class OrderServiceTests
     }
 
     [Fact]
-    public void GetOrder_ShouldReturnOrder_WhenOrderExists()
+    public async Task GetOrder_ShouldReturnOrder_WhenOrderExists()
     {
         // Arrange
-        var orderService = new OrderService();
+        var publishEndpoint = Substitute.For<IPublishEndpoint>();
+        var orderService = new OrderService(new OrderRepository(), publishEndpoint);
         var deliveryAddressRequest = new AddressRequest("123 Main St", "12345", "Sample City");
         var orderItemRequest = new OrderItemRequest(Guid.NewGuid(), new WeightRequest(2, Unit.Grams));
         var orderRequest = new CreateOrderRequest([orderItemRequest], deliveryAddressRequest);
-        var response = orderService.CreateOrder(orderRequest);
+        var response = await orderService.CreateOrder(orderRequest);
 
         // Act
-        var retrievedOrder = orderService.GetOrder(response.Id);
+        var retrievedOrder = await orderService.GetOrder(response.Id);
 
         // Assert
         Assert.NotNull(retrievedOrder);
@@ -42,14 +46,15 @@ public class OrderServiceTests
     }
 
     [Fact]
-    public void GetOrder_ShouldReturnNull_WhenOrderDoesNotExist()
+    public async Task GetOrder_ShouldReturnNull_WhenOrderDoesNotExist()
     {
         // Arrange
-        var orderService = new OrderService();
+        var publishEndpoint = Substitute.For<IPublishEndpoint>();
+        var orderService = new OrderService(new OrderRepository(), publishEndpoint);
         var nonExistentOrderId = Guid.NewGuid();
 
         // Act
-        var retrievedOrder = orderService.GetOrder(nonExistentOrderId);
+        var retrievedOrder = await orderService.GetOrder(nonExistentOrderId);
 
         // Assert
         Assert.Null(retrievedOrder);
