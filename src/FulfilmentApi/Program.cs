@@ -35,6 +35,7 @@ builder.Services.AddMassTransit(x =>
     });
 
     x.AddConsumer<InventoryReservationConsumer>();
+    x.AddConsumer<DeliverySchedulingConsumer>();
 });
 
 var app = builder.Build();
