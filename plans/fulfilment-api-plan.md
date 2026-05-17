@@ -39,11 +39,11 @@ A practice API that simulates an order fulfilment pipeline — placing orders, r
 
 ### Part 3: Event-Driven Messaging
 
-- [ ] Add RabbitMQ via Docker Compose
-- [ ] Install MassTransit
-- [ ] Publish `OrderPlaced` event when an order is created
-- [ ] Consumer: `InventoryReservationConsumer` listens and "reserves stock"
-- [ ] Consumer: `DeliverySchedulingConsumer` assigns a delivery slot
+- [x] Add RabbitMQ via Docker Compose
+- [x] Install MassTransit
+- [x] Publish `OrderPlaced` event when an order is created
+- [x] Consumer: `InventoryReservationConsumer` listens and "reserves stock"
+- [x] Consumer: `DeliverySchedulingConsumer` assigns a delivery slot
 - [ ] Idempotency — handle duplicate messages safely
 - [ ] Dead-letter queue for failed messages
 
