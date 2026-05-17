@@ -1,5 +1,6 @@
 using System.Threading.Channels;
 using FulfilmentApi.Domain;
+using FulfilmentApi.Infrastructure.Consumers;
 using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,7 +31,11 @@ builder.Services.AddMassTransit(x =>
             h.Username("guest");
             h.Password("guest");
         });
+        cfg.ConfigureEndpoints(context);
     });
+
+    x.AddConsumer<InventoryReservationConsumer>();
+    x.AddConsumer<DeliverySchedulingConsumer>();
 });
 
 var app = builder.Build();
